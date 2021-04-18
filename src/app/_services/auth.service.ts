@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,8 @@ export class AuthService {
   baseUrl = environment.apiUrl + 'auth/';
   jwtHelper = new JwtHelperService();
   decodedToken: any;
+  private currentUserSource = new ReplaySubject<User>(1);
+  currentUser$ = this.currentUserSource.asObservable();
   currentUser: User;
   photoUrl = new BehaviorSubject<string>('../../assets/user.png');
   currentPhotoUrl = this.photoUrl.asObservable();

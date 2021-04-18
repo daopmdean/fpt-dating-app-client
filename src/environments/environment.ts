@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://fptdatingapp.azurewebsites.net/api/'
+  apiUrl: 'https://localhost:5001/api/'
+  // apiUrl: 'http://localhost:5000/api/'
+  // apiUrl: 'http://fptdatingapp.azurewebsites.net/api/'
 };
 
 /*

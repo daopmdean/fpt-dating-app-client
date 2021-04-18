@@ -5,7 +5,7 @@ import {
 } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   BsDropdownModule,
@@ -15,7 +15,7 @@ import {
   PaginationModule
 } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
-import { JwtModule } from '@auth0/angular-jwt';
+import { JwtInterceptor, JwtModule } from '@auth0/angular-jwt';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { FileUploadModule } from 'ng2-file-upload';
 import { TimeAgoPipe } from 'time-ago-pipe';
@@ -24,7 +24,6 @@ import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
-import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
@@ -91,13 +90,13 @@ export class CustomHammerConfig extends HammerGestureConfig {
     })
   ],
   providers: [
-    ErrorInterceptorProvider,
     MemberDetailResolver,
     MemberListResolver,
     MemberEditResolver,
     ListsResolver,
     MessagesResolver,
     PreventUnsavedChanges,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig }
   ],
   bootstrap: [AppComponent]
