@@ -15,7 +15,7 @@ import {
   PaginationModule
 } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
-import { JwtInterceptor, JwtModule } from '@auth0/angular-jwt';
+import { JwtModule } from '@auth0/angular-jwt';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { FileUploadModule } from 'ng2-file-upload';
 import { TimeAgoPipe } from 'time-ago-pipe';
@@ -39,6 +39,7 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
 import { ListsResolver } from './_resolvers/lists.resolver';
 import { MessagesResolver } from './_resolvers/messages.resolver';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { JwtInterceptor } from './_services/jwt.interceptor';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -84,7 +85,7 @@ export class CustomHammerConfig extends HammerGestureConfig {
     JwtModule.forRoot({
       config: {
         tokenGetter,
-        whitelistedDomains: ['localhost:5000'],
+        whitelistedDomains: ['localhost:5000', 'https://localhost:5001'],
         blacklistedRoutes: ['localhost:5000/api/auth']
       }
     })

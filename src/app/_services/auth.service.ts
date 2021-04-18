@@ -15,6 +15,8 @@ export class AuthService {
   decodedToken: any;
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentUserSource.asObservable();
+  private jwtSource = new ReplaySubject<String>(1);
+  decodedToken$ = this.jwtSource.asObservable();
   currentUser: User;
   photoUrl = new BehaviorSubject<string>('../../assets/user.png');
   currentPhotoUrl = this.photoUrl.asObservable();
@@ -33,8 +35,9 @@ export class AuthService {
           localStorage.setItem('token', user.token);
           localStorage.setItem('user', JSON.stringify(user.user));
           this.decodedToken = this.jwtHelper.decodeToken(user.token);
-          this.currentUser = user.user;
-          this.changeMemberPhoto(this.currentUser.photoUrl);
+          // this.currentUser = user.user;
+          this.jwtSource.next(user.token);
+          this.changeMemberPhoto(user.user.photoUrl);
         }
       })
     );
@@ -46,6 +49,7 @@ export class AuthService {
 
   loggedIn() {
     const token = localStorage.getItem('token');
+    this.jwtSource.next(token);
     return !this.jwtHelper.isTokenExpired(token);
   }
 }
